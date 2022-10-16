@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+.body-bg{
+    background-color: rgb(48, 48, 48);
+}
+
+.main-content {
+    background-color: rgb(117, 117, 117);
+    border-radius: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    height: 720px;
+    width: 350px;
+    max-height: 720px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
+
+}
+
+.main-content::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.item {
+    background-color: rgb(48, 48, 48);
+    border-radius: 15px;
+    width: 300px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 20px;
+    color: rgb(233, 233, 233);
+    text-align: center;
+}
+
+</style>
+
+
+
+<body class="body-bg">
+    <div id="main-content" class="main-content">
+        <div id="first-item" class="item">
+
+        </div>
+    </div>
+</body>
+
+
+<script>
+
+    function createDiv(id, color) {
+        let div = document.createElement('div');
+        div.classList.add('item');
+        document.getElementById("main-content").appendChild(div);
+    }
+
+    function getlocation() {
+        navigator.geolocation.getCurrentPosition(showLoc);
+    }
+
+
+    function showLoc(pos) {
+        document.getElementById("first-item").innerHTML = "Speed: "
+        + pos.coords.speed;
+    }
+
+    let i = 0;
+
+    const threeSeconds = 3000;
+
+    setInterval(() => {
+        i += 1;
+        getlocation()
+    }, threeSeconds);
+
+</script>
+</html>
