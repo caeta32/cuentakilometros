@@ -20,7 +20,7 @@ html {
     background-color: rgb(48, 48, 48);
 }
 
-.main-content {
+.stopwatch-controls {
     background-color: rgb(117, 117, 117);
     border-radius: 20px;
     position: fixed;
@@ -39,6 +39,24 @@ html {
     scrollbar-width: none; 
     text-align: center;
 
+}
+
+
+.stopwatch-controls::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.main-content {
+    background-color: rgb(117, 117, 117);
+    border-radius: 20px;
+    position: fixed;
+    height: 720px;
+    width: 350px;
+    max-height: 720px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
+    text-align: center;
 }
 
 .main-content::-webkit-scrollbar { 
@@ -75,14 +93,17 @@ p {
 
 
 <body class="body-bg">
-    <div id="main-content" class="main-content">
+    <div class="stopwatch-controls">
         <p><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></p>
         <button id="button-start">Comenzar</button>
         <button id="button-stop">Parar</button>
-        <div id="first-item" class="item">
-
+        <div id="main-content" class="main-content">
+            <div id="first-item" class="item">
+    
+            </div>
         </div>
     </div>
+
 </body>
 
 
