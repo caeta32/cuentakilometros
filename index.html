@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <style>
+
+html {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
 
 .body-bg{
     background-color: rgb(48, 48, 48);
@@ -29,6 +37,7 @@
     overflow-y: scroll;
     -ms-overflow-style: none;  
     scrollbar-width: none; 
+    text-align: center;
 
 }
 
@@ -47,12 +56,29 @@
     text-align: center;
 }
 
+button {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    border: 1px solid red;
+    margin: 10px;
+}
+
+p {
+    font-size: 32px;
+}
+
+
+
 </style>
 
 
 
 <body class="body-bg">
     <div id="main-content" class="main-content">
+        <p><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></p>
+        <button id="button-start">Comenzar</button>
+        <button id="button-stop">Parar</button>
         <div id="first-item" class="item">
 
         </div>
@@ -62,8 +88,105 @@
 
 <script>
 
-    function createDiv(id, color) {
+    const getInfoInterval = 100; // Obtengo Info cada medio segundo (500 milisegundos)
+    const testingSpeed = 50; // Me muevo a 16.5 metros por segundo, 180 km/h
+    var totalDistance = 0;
+    var kilometerCount = 0;
+    var divCount = 0;
+    var hours = 00;
+    var minutes = 00;
+    var seconds = 00; 
+    var tens = 00; 
+    //var appendTens = document.getElementById("tens");
+    var appendSeconds = document.getElementById("seconds");
+    var appendMinutes = document.getElementById("minutes");
+    var appendHours = document.getElementById("hours");
+    var buttonStart = document.getElementById('button-start');
+    var buttonStop = document.getElementById('button-stop');
+    var buttonReset = document.getElementById('button-reset');
+    var Interval ;
+
+    buttonStart.onclick = function() {
+        DistanceInterval = setInterval(() => {
+            i += 1;
+            totalDistance += calculateDistance(testingSpeed, getInfoInterval, totalDistance);
+            if(divCount == 0) {
+                document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + "";
+            } else {
+                document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
+            }
+            if(totalDistance >= 1000) {
+                totalDistance = 0;
+                if(divCount == 0) {
+                    createDiv(divCount + 1);
+                    var minutes = document.getElementById("minutes").innerHTML;
+                    var seconds = document.getElementById("seconds").innerHTML;
+                    document.getElementById("first-item").innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + " minutos y " + seconds + " segundos." ; 
+                    var audio = new Audio('notification.mp3');
+                    audio.play();
+                    divCount += 1; 
+                } else {
+                    var minutes = document.getElementById("minutes").innerHTML;
+                    var seconds = document.getElementById("seconds").innerHTML;
+                    document.getElementById(divCount).innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + " minutos y " + seconds + " segundos." ; 
+                    var audio = new Audio('notification.mp3');
+                    audio.play(); 
+                    divCount += 1;
+                    createDiv(divCount);
+                }
+
+            }
+            //getlocation()
+
+        }, getInfoInterval);
+        clearInterval(Interval);
+        Interval = setInterval(startTimer, 10);
+    }
+    
+        buttonStop.onclick = function() {
+            clearInterval(Interval);
+            clearInterval(DistanceInterval);
+            tens = "00";
+            seconds = "00";
+            //appendTens.innerHTML = tens;
+            appendSeconds.innerHTML = seconds;
+    }
+    
+    
+    
+    
+    function startTimer () {
+        tens++; 
+        
+        
+        if (tens > 99) {
+        console.log("seconds");
+        seconds++;
+        appendSeconds.innerHTML = "0" + seconds;
+        tens = 0;
+        //appendTens.innerHTML = "0" + 0;
+        }
+        
+        if (seconds > 9){
+        appendSeconds.innerHTML = seconds;
+        }
+
+        if (seconds > 59){
+            seconds = 0;
+            appendSeconds.innerHTML = "0" + seconds;
+            minutes++;
+            appendMinutes.innerHTML = "0" + minutes;
+        }
+
+        if (minutes > 9){
+            appendMinutes.innerHTML = minutes;
+        }
+    
+    }
+
+    function createDiv(id) {
         let div = document.createElement('div');
+        div.setAttribute('id', id);
         div.classList.add('item');
         document.getElementById("main-content").appendChild(div);
     }
@@ -76,16 +199,24 @@
     function showLoc(pos) {
         document.getElementById("first-item").innerHTML = "Speed: "
         + pos.coords.speed;
+        return pos.coords.speed;
+    }
+
+    function calculateDistance(speed, timeSpentAtGivenSpeed, totalDistance) {
+        // Si speed = 10 m/s, y me movi a esa velocidad durante 1 segundo => me movi 10 metros
+        var distanceCovered = speed * (timeSpentAtGivenSpeed / 1000);
+
+        
+        return distanceCovered;
     }
 
     let i = 0;
 
-    const threeSeconds = 3000;
+    // const threeSeconds = 3000;
 
-    setInterval(() => {
-        i += 1;
-        getlocation()
-    }, threeSeconds);
+
+
+    
 
 </script>
 </html>
