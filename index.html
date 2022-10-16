@@ -123,12 +123,30 @@ p {
         return this[Math.floor((Math.random()*this.length))];
     }
 
+    function initGeo() {
+        navigator.geolocation.watchPosition(
+            geosuccess,
+            geofailure,
+            {
+                enableHighAccuracy:true,
+                maximumAge:30000,
+                timeout:20000
+            }
+        );
+    }   
+    
+    function geosuccess(event) {
+        var speed = event.coords.speed;
+        return speed;
+    }
+
     buttonStart.onclick = function() {
         DistanceInterval = setInterval(() => {
             i += 1;
             totalDistance +=  Math.trunc(calculateDistance(randomTestingSpeed.random(), getInfoInterval, totalDistance));
             if(divCount == 0) {
-                document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + "";
+                var movingSpeed = geosuccess(event);
+                document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + movingSpeed;
             } else {
                 document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
             }
