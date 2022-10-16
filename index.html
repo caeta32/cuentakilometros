@@ -20,7 +20,8 @@ html {
     background-color: rgb(48, 48, 48);
 }
 
-.stopwatch-controls {
+
+.main-content {
     background-color: rgb(117, 117, 117);
     border-radius: 20px;
     position: fixed;
@@ -31,25 +32,6 @@ html {
     -moz-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    height: 720px;
-    width: 350px;
-    max-height: 720px;
-    overflow-y: scroll;
-    -ms-overflow-style: none;  
-    scrollbar-width: none; 
-    text-align: center;
-
-}
-
-
-.stopwatch-controls::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
-}
-
-.main-content {
-    background-color: rgb(117, 117, 117);
-    border-radius: 20px;
-    position: fixed;
     height: 720px;
     width: 350px;
     max-height: 720px;
@@ -80,12 +62,20 @@ button {
     border-radius: 50%;
     border: 1px solid red;
     margin: 10px;
+    margin-top: 50px;
+}
+
+.hidden-stop {
+    display: none;
 }
 
 p {
     font-size: 32px;
 }
 
+.hidden-stopwatch {
+    display: none;
+}
 
 
 </style>
@@ -93,16 +83,16 @@ p {
 
 
 <body class="body-bg">
-    <div class="stopwatch-controls">
-        <p><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></p>
-        <button id="button-start">Comenzar</button>
-        <button id="button-stop">Parar</button>
+
         <div id="main-content" class="main-content">
+            <p class="hidden-stopwatch"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></p>
+            <button id="button-start">Comenzar</button>
+            <button id="hidden-stop" class="hidden-stop"></button>
+            <button id="button-stop">Parar</button>
             <div id="first-item" class="item">
     
             </div>
         </div>
-    </div>
 
 </body>
 
@@ -125,6 +115,7 @@ p {
     var appendHours = document.getElementById("hours");
     var buttonStart = document.getElementById('button-start');
     var buttonStop = document.getElementById('button-stop');
+    var hiddenStop = document.getElementById('hidden-stop');
     var buttonReset = document.getElementById('button-reset');
     var Interval ;
 
@@ -141,8 +132,9 @@ p {
             } else {
                 document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
             }
-            if(totalDistance >= 1000) {
+            if(totalDistance >= 500) {
                 totalDistance = 0;
+                
                 if(divCount == 0) {
                     createDiv(divCount + 1);
                     var minutes = document.getElementById("minutes").innerHTML;
@@ -150,7 +142,8 @@ p {
                     document.getElementById("first-item").innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + " minutos y " + seconds + " segundos." ; 
                     var audio = new Audio('notification.mp3');
                     audio.play();
-                    divCount += 1; 
+                    divCount += 1;
+                    document.getElementById("hidden-stop").click(); 
                 } else {
                     var minutes = document.getElementById("minutes").innerHTML;
                     var seconds = document.getElementById("seconds").innerHTML;
@@ -159,6 +152,8 @@ p {
                     audio.play(); 
                     divCount += 1;
                     createDiv(divCount);
+                    document.getElementById("hidden-stop").click(); 
+
                 }
 
             }
@@ -169,14 +164,25 @@ p {
         Interval = setInterval(startTimer, 10);
     }
     
-        buttonStop.onclick = function() {
+        hiddenStop.onclick = function() {
             clearInterval(Interval);
-            clearInterval(DistanceInterval);
             tens = "00";
             seconds = "00";
+            minutes = "00";
             //appendTens.innerHTML = tens;
             appendSeconds.innerHTML = seconds;
+            Interval = setInterval(startTimer, 10);
     }
+
+        buttonStop.onclick = function() {
+                clearInterval(Interval);
+                clearInterval(DistanceInterval);
+                tens = "00";
+                seconds = "00";
+                minutes = "00";
+                //appendTens.innerHTML = tens;
+                appendSeconds.innerHTML = seconds;
+        }
     
     
     
