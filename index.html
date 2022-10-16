@@ -77,13 +77,18 @@ p {
     display: none;
 }
 
+.speed {
+    display: none;
+}
 
 </style>
 
 
 
 <body class="body-bg">
+        <div id="speed" class="speed">
 
+        </div>
         <div id="main-content" class="main-content">
             <p class="hidden-stopwatch"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></p>
             <button id="button-start">Comenzar</button>
@@ -129,18 +134,18 @@ p {
       }
  
     function showLoc(pos) {
-        var mySpeed = pos.coords.speed;
-        return pos.coords.speed;
+        document.getElementById("speed").innerHTML = pos.coords.speed;
     }
 
 
     buttonStart.onclick = function() {
         DistanceInterval = setInterval(() => {
             i += 1;
-            var movingSpeed = getlocation()
-            totalDistance +=  Math.trunc(calculateDistance(movingSpeed, getInfoInterval, totalDistance));
+            getlocation();
+            var speed = document.getElementById("speed").innerHTML;
+            totalDistance +=  Math.trunc(calculateDistance(speed, getInfoInterval, totalDistance));
             if(divCount == 0) {
-                document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + movingSpeed;
+                document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + speed;
             } else {
                 document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
             }
