@@ -137,9 +137,9 @@ p {
     buttonStart.onclick = function() {
         DistanceInterval = setInterval(() => {
             i += 1;
-            totalDistance +=  Math.trunc(calculateDistance(showLoc(pos), getInfoInterval, totalDistance));
+            var movingSpeed = getlocation()
+            totalDistance +=  Math.trunc(calculateDistance(movingSpeed, getInfoInterval, totalDistance));
             if(divCount == 0) {
-                var movingSpeed = geosuccess(event);
                 document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + movingSpeed;
             } else {
                 document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
@@ -233,17 +233,6 @@ p {
         div.setAttribute('id', id);
         div.classList.add('item');
         document.getElementById("main-content").appendChild(div);
-    }
-
-    function getlocation() {
-        navigator.geolocation.getCurrentPosition(showLoc);
-    }
-
-
-    function showLoc(pos) {
-        document.getElementById("first-item").innerHTML = "Speed: "
-        + pos.coords.speed;
-        return pos.coords.speed;
     }
 
     function calculateDistance(speed, timeSpentAtGivenSpeed, totalDistance) {
