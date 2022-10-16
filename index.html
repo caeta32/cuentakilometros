@@ -123,27 +123,21 @@ p {
         return this[Math.floor((Math.random()*this.length))];
     }
 
-    function initGeo() {
-        navigator.geolocation.watchPosition(
-            geosuccess,
-            geofailure,
-            {
-                enableHighAccuracy:true,
-                maximumAge:30000,
-                timeout:20000
-            }
-        );
-    }   
-    
-    function geosuccess(event) {
-        var speed = event.coords.speed;
-        return speed;
+
+    function getlocation() {
+          navigator.geolocation.getCurrentPosition(showLoc);
+      }
+ 
+    function showLoc(pos) {
+        var mySpeed = pos.coords.speed;
+        return Math.trunc(mySpeed);
     }
+
 
     buttonStart.onclick = function() {
         DistanceInterval = setInterval(() => {
             i += 1;
-            totalDistance +=  Math.trunc(calculateDistance(randomTestingSpeed.random(), getInfoInterval, totalDistance));
+            totalDistance +=  Math.trunc(calculateDistance(showLoc(pos), getInfoInterval, totalDistance));
             if(divCount == 0) {
                 var movingSpeed = geosuccess(event);
                 document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + movingSpeed;
