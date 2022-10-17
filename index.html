@@ -134,7 +134,7 @@ p {
       }
  
     function showLoc(pos) {
-        document.getElementById("speed").innerHTML = pos.coords.speed;
+        document.getElementById("speed").innerHTML = Math.trunc(pos.coords.speed);
     }
 
 
@@ -149,14 +149,14 @@ p {
             } else {
                 document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
             }
-            if(totalDistance >= 500) {
+            if(totalDistance >= 1000) {
                 totalDistance = 0;
                 
                 if(divCount == 0) {
                     createDiv(divCount + 1);
                     var minutes = document.getElementById("minutes").innerHTML;
                     var seconds = document.getElementById("seconds").innerHTML;
-                    document.getElementById("first-item").innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + " minutos y " + seconds + " segundos." ; 
+                    document.getElementById("first-item").innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + ":" + seconds + "." + tens; 
                     var audio = new Audio('notification.mp3');
                     audio.play();
                     divCount += 1;
@@ -164,7 +164,7 @@ p {
                 } else {
                     var minutes = document.getElementById("minutes").innerHTML;
                     var seconds = document.getElementById("seconds").innerHTML;
-                    document.getElementById(divCount).innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + " minutos y " + seconds + " segundos." ; 
+                    document.getElementById(divCount).innerHTML = "KILOMETRO " + (divCount + 1) + " COMPLETADO!" + "</br>" + "Duracion: " + minutes + ":" + seconds + "." + tens; 
                     var audio = new Audio('notification.mp3');
                     audio.play(); 
                     divCount += 1;
@@ -213,7 +213,7 @@ p {
         seconds++;
         appendSeconds.innerHTML = "0" + seconds;
         tens = 0;
-        //appendTens.innerHTML = "0" + 0;
+        appendTens.innerHTML = "0" + 0;
         }
         
         if (seconds > 9){
