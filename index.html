@@ -138,7 +138,9 @@ p {
     }
 
 
-    buttonStart.onclick = function() {
+    buttonStart.onclick = async function() {
+        document.getElementById("first-item").innerHTML = "Inicializando GPS...";
+        await new Promise(r => setTimeout(r, 20000));
         DistanceInterval = setInterval(() => {
             i += 1;
             getlocation();
@@ -147,7 +149,7 @@ p {
             if(divCount == 0) {
                 document.getElementById("first-item").innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + speed;
             } else {
-                document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + "";
+                document.getElementById(divCount).innerHTML = "Distancia Recorrida: " + totalDistance + " | Velocidad: " + speed;
             }
             if(totalDistance >= 1000) {
                 totalDistance = 0;
